@@ -162,3 +162,7 @@ cython_debug/
 # Custom Ignore Rules
 *.qif
 !samples/output.qif
+
+*.csv
+!samples/input.csv
+!input/mappings-sample.csv
