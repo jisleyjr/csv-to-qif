@@ -58,24 +58,39 @@ with open('input/' + filename, newline='\n') as csvfile:
     for row in reader:
       # FundName needs to be in the mappings
       if (row['FundName'] in mappings):
-        # The TransName field needs to equal 'Investment Purchase'
+        # Load up the properties
+        date = format_date(row['Date'])
+        fundname = mappings[row['FundName']]
+        units = row['Units']
+        amount = row['Amount']
+        price = row['Price']
+
         if (row['TransName'] == 'Investment Purchase'):
           action = 'Buy'
-          # Load up the properties
-          date = format_date(row['Date'])
-          fundname = mappings[row['FundName']]
-          units = row['Units']
-          amount = row['Amount']
-          price = row['Price']
-
           # Putting it all together
           transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^'
           outputfile.write(transaction + '\n')
-        else:
-          # TODO : Handle other transaction types
-          print('TransName not equal to Investment Purchase: ' + row['TransName'])
 
-      else:
+        elif (row['TransName'] == 'Custodial Management Fee'):
+          # TODO : Handle Custodial Management Fee
+          print('This not handled yet: ' + row['TransName'])
+
+        elif (row['TransName'] == 'Custodial Management Fee - Cash disbursement'):
+          # TODO : Handle Custodial Management Fee - Cash disbursement
+          print('This not handled yet: ' + row['TransName'])
+
+        elif (row['TransName'] == 'Reinvested Dividend'):
+          action = 'ReinvDiv'
+           # Putting it all together
+          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^'
+          outputfile.write(transaction + '\n')
+        elif (row['TransName'] == 'Dividend Received - Cash receipt'):
+          # Not going to handle Dividend Received - Cash receipt
+          print('Not going to handle Dividend Received - Cash receipt')
+        else:
+          print('Unhandled TransName: ' + row['TransName'])
+
+      elif (row['FundName'] != 'Cash'):
         print('FundName not found in mappings: ' + row['FundName'])
 
       
