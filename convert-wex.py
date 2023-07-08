@@ -50,7 +50,7 @@ mappings = load_mappings('WEX')
 with open('input/' + filename, newline='\n') as csvfile:
   reader = csv.DictReader(csvfile)
 
-  with open('output/' + str(int(time.time())) + '.qif', 'w') as outputfile:
+  with open('output/' + str(int(time.time())) + '.QIF', 'w') as outputfile:
     # Write the header
     outputfile.write('!Type:Invst\n')
 
@@ -68,12 +68,15 @@ with open('input/' + filename, newline='\n') as csvfile:
         if (row['TransName'] == 'Investment Purchase'):
           action = 'Buy'
           # Putting it all together
-          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^'
-          outputfile.write(transaction + '\n')
+          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
+          outputfile.write(transaction)
 
         elif (row['TransName'] == 'Custodial Management Fee'):
-          # TODO : Handle Custodial Management Fee
-          print('This not handled yet: ' + row['TransName'])
+          action = 'Sell'
+          # Putting it all together
+          # Units and amount have a - as a prefix
+          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units.replace("-", "") + '\nO' + amount.replace("-", "") + '\n^\n'
+          outputfile.write(transaction)
 
         elif (row['TransName'] == 'Custodial Management Fee - Cash disbursement'):
           # TODO : Handle Custodial Management Fee - Cash disbursement
@@ -81,9 +84,10 @@ with open('input/' + filename, newline='\n') as csvfile:
 
         elif (row['TransName'] == 'Reinvested Dividend'):
           action = 'ReinvDiv'
-           # Putting it all together
-          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^'
-          outputfile.write(transaction + '\n')
+          # Putting it all together
+          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
+          outputfile.write(transaction)
+
         elif (row['TransName'] == 'Dividend Received - Cash receipt'):
           # Not going to handle Dividend Received - Cash receipt
           print('Not going to handle Dividend Received - Cash receipt')
