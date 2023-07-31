@@ -13,6 +13,16 @@ Date,FundName,TransName,Units,Amount,Price,Source
 04/06/23,AMERICAN GROWTH FND OF AMER R6,Investment Purchase,5.327000,289.670000,54.380000,
 ```
 
+# Capital Group
+
+Here is a sample of Captial Group. I had to download to Excel format and then save as a csv.
+
+```
+Trade date,Account number,Fund name,Activity type,Activity detail,Transaction amount,Sale charge %¹,Sales charge amount,Share price,Shares this transaction,Share balance
+06/30/2023,81114613,American High-Income Trust - A (21),Dividends - reinvested,INCOME DIVIDEND,$39.48,,,$9.15,4.3150,871.584
+```
+
+
 ## Quicken QIF
 
 Here is an example of the above transaction converted.

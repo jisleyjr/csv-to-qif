@@ -15,56 +15,52 @@ print('Get the filename to import')
 filename = sys.argv[1]
 
 # Load the mappings for WEX
-mappings = load_mappings('WEX')
+mappings = load_mappings('CAPITALGROUP')
 
-with open('input/' + filename, newline='\n') as csvfile:
+# encoding='utf-8-sig' added to help with '\ufeffTrade date' for first column
+with open(filename, newline='\n', encoding='utf-8-sig') as csvfile:
   reader = csv.DictReader(csvfile)
-
-  with open('output/' + str(int(time.time())) + '-WEX.QIF', 'w') as outputfile:
+  
+  with open('output/' + str(int(time.time())) + '-CAPITALGROUP.QIF', 'w') as outputfile:
     # Write the header
     outputfile.write('!Type:Invst\n')
 
-    # Date,FundName,TransName,Units,Amount,Price,Source
+    # Trade date,Account number,Fund name,Activity type,Activity detail,Transaction amount
+    # Sale charge %¹,Sales charge amount,Share price,Shares this transaction,Share balance
     for row in reader:
       # FundName needs to be in the mappings
-      if (row['FundName'] in mappings):
+      if (row['Fund name'] in mappings):
         # Load up the properties
-        date = format_date_yy(row['Date'])
-        fundname = mappings[row['FundName']]
-        units = row['Units']
-        amount = row['Amount']
-        price = row['Price']
-
-        if (row['TransName'] == 'Investment Purchase'):
-          action = 'Buy'
+        date = format_date_yyyy(row['Trade date'])
+        fundname = mappings[row['Fund name']]
+        units = row['Shares this transaction'] # Number of shares
+        amount = row['Transaction amount'] # Total Amount
+        price = row['Share price']
+        transactionType = row['Activity type']
+        
+        if (transactionType == 'Dividends - reinvested'):
+          action = 'ReinvDiv'
           # Putting it all together
           transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
           outputfile.write(transaction)
-
-        elif (row['TransName'] == 'Custodial Management Fee'):
+        
+        elif (transactionType == 'Withdrawals'):
           action = 'Sell'
           # Putting it all together
           # Units and amount have a - as a prefix
           transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units.replace("-", "") + '\nO' + amount.replace("-", "") + '\n^\n'
           outputfile.write(transaction)
-
-        elif (row['TransName'] == 'Custodial Management Fee - Cash disbursement'):
-          # TODO : Handle Custodial Management Fee - Cash disbursement
-          print('This not handled yet: ' + row['TransName'])
-
-        elif (row['TransName'] == 'Reinvested Dividend'):
+        
+        elif (transactionType == 'Capital gains - reinvested'):
           action = 'ReinvDiv'
           # Putting it all together
           transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
           outputfile.write(transaction)
-
-        elif (row['TransName'] == 'Dividend Received - Cash receipt'):
-          # Not going to handle Dividend Received - Cash receipt
-          print('Not going to handle Dividend Received - Cash receipt')
+          
         else:
-          print('Unhandled TransName: ' + row['TransName'])
-
+          print('Unhandled transaction type: ' + transactionType)
+        
       elif (row['FundName'] != 'Cash'):
         print('FundName not found in mappings: ' + row['FundName'])
-
-      
+  
+  
