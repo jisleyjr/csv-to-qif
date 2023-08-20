@@ -67,4 +67,5 @@ with open('input/' + filename, newline='\n') as csvfile:
       elif (row['FundName'] != 'Cash'):
         print('FundName not found in mappings: ' + row['FundName'])
 
+print('Done')
       

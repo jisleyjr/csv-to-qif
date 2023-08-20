@@ -37,3 +37,10 @@ U289.67
 T289.67
 ^
 ```
+
+# How to run
+## convert-wex.py
+```
+python3 convert-wex.py filename-in-inputs-folder.csv
+```
+This will create a QIF file in the output folder with WEX suffix.
