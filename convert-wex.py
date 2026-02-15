@@ -40,6 +40,12 @@ with open('input/' + filename, newline='\n') as csvfile:
           # Putting it all together
           transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
           outputfile.write(transaction)
+          
+        elif (row['TransName'] == 'Investment Withdrawal'):
+          action = 'Sell'
+          # Putting it all together
+          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
+          outputfile.write(transaction)
 
         elif (row['TransName'] == 'Custodial Management Fee'):
           action = 'Sell'
