@@ -163,6 +163,7 @@ cython_debug/
 *.qif
 *.QIF
 !samples/output.qif
+*.QDF
 
 *.csv
 !samples/input.csv
