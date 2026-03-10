@@ -41,7 +41,7 @@ with open(filename, newline='\n', encoding='utf-8-sig') as csvfile:
         if (transactionType == 'Dividends - reinvested'):
           action = 'ReinvDiv'
           # Putting it all together
-          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
+          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price.replace("$", "") + '\nQ' + units + '\nU' + amount.replace("$", "") + '\nT' + amount.replace("$", "") + '\n^\n'
           outputfile.write(transaction)
         
         elif (transactionType == 'Withdrawals'):
@@ -60,7 +60,7 @@ with open(filename, newline='\n', encoding='utf-8-sig') as csvfile:
         else:
           print('Unhandled transaction type: ' + transactionType)
         
-      elif (row['FundName'] != 'Cash'):
-        print('FundName not found in mappings: ' + row['FundName'])
+      else:
+        print('FundName not found in mappings: ' + row['Fund name'])
   
   
