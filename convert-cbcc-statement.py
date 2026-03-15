@@ -102,15 +102,15 @@ def main():
         print("Error: Only PDF files are accepted.", file=sys.stderr)
         sys.exit(1)
 
-    # Now lets extract transactions from the PDF
+    # Now lets extract transactions from the PDF    
     raw_lines = extract_text(args.input_path)
     section = read_transaction_section(raw_lines.splitlines())
     transactions = parse_transactions(section)
 
     print(f"Extracted transactions: {len(transactions)}")
 
-    # Now create the output CSV file into the output directory with a timestamped name
-    output_path = Path("output") / f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}-CBCC.QIF"
+    # Now create the output QIF file
+    output_path = Path("output") / f"{str(int(time.time()))}-CBCC.QIF"
     
     """
     Write transactions in the “CCard” format.
