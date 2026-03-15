@@ -14,7 +14,7 @@ if (len(sys.argv) == 1):
 print('Get the filename to import')
 filename = sys.argv[1]
 
-# Load the mappings for WEX
+# Load the mappings for CAPTIALGROUP
 mappings = load_mappings('CAPITALGROUP')
 
 # encoding='utf-8-sig' added to help with '\ufeffTrade date' for first column
