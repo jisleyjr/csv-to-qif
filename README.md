@@ -22,6 +22,24 @@ Trade date,Account number,Fund name,Activity type,Activity detail,Transaction am
 06/30/2023,81114613,American High-Income Trust - A (21),Dividends - reinvested,INCOME DIVIDEND,$39.48,,,$9.15,4.3150,871.584
 ```
 
+# Coinbase Credit Card
+
+I haven't found a way to import the transactions for a Coinbase CC, so I created a script to read through the PDF, convert the description and create a QIF,
+
+Sample transaction text
+
+```
+Transactions
+Date Description Amount
+Feb 11, 2026 PY *POUNDS 000003683 344 2ST AVE N Anytown $23.47
+Anytown 11111 564 123
+Feb 12, 2026 CASH WISE #3045 00000000 222 1 AVE EAST $37.70
+Anytown 11111 564 123
+Feb 13, 2026 SP BRUNT WORKWEAR 54 CONCORD STREET $57.08
+Anytown 11111 564 123
+Feb 16, 2026 DRUNKEN NOODLE SLURP RAM 414 Main St NW $16.88
+Anytown 11111 564 123
+```
 
 ## Quicken QIF
 
@@ -44,3 +62,16 @@ T289.67
 python3 convert-wex.py filename-in-inputs-folder.csv
 ```
 This will create a QIF file in the output folder with WEX suffix.
+
+## convert-cbcc-statement.py
+```
+python convert-cbcc-statement.py input/statement.pdf
+```
+This will create a QIF file in the output folder. pdfplumber will need to be installed.
+
+### Running on Ubuntu 20
+Using venv to specify 3.12 version.
+```
+python -m venv myenv
+source myenv/bin/activate
+```

@@ -1,6 +1,7 @@
 import csv
 import sys
 import time
+from datetime import datetime
 
 # Load the mappings out of the filename
 def load_mappings(inputsource):
@@ -48,3 +49,12 @@ def format_date_yyyy(date):
   formattedDate += str(dayInt) + '\'' + year
 
   return formattedDate
+
+def convert_coinbase_date(old: str) -> str:
+  """
+  Convert 'Feb 11, 2026' → '2/11'26'
+  """
+  # Parse the original format
+  dt = datetime.strptime(old, "%b %d, %Y")
+  # Build the new format: month/day'YY
+  return f"{dt.month}/{dt.day:02d}'{dt.year % 100:02d}"

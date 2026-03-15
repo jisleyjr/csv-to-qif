@@ -160,11 +160,13 @@ cython_debug/
 #.idea/
 
 # Custom Ignore Rules
+/myenv
 *.qif
 *.QIF
 !samples/output.qif
+!samples/cbcc-output.QIF
 *.QDF
-
+*.pdf
 *.csv
 !samples/input.csv
 !input/mappings-sample.csv
