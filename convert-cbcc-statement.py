@@ -109,6 +109,9 @@ def main():
 
     print(f"Extracted transactions: {len(transactions)}")
 
+    # Load the payee mappings
+    payee_mappings = load_payee_mappings()
+
     # Now create the output QIF file
     output_path = Path("output") / f"{str(int(time.time()))}-CBCC.QIF"
     
@@ -129,12 +132,23 @@ def main():
         f.write("!Type:CCard\n")
 
         for tx in transactions:
+
+            # Map the description to a name and category using the payee mappings
+            description = tx["description"].replace("\n", " ").strip()
+            #print(f"Original description: '{description}'")
+            entry = payee_mappings.get(description, {})
+            if entry:
+                description = entry.get("name", description)
+                category = entry.get("category", "Miscellaneous")
+            else:
+                print(f"{description}")
+                category = "Miscellaneous"
+            
+
             # Date: month/day'YY
             date_str = tx["date"]          # e.g. "2/11'26"
             amount = tx["amount"]          # e.g. "23.47"
-            description = tx["description"].replace("\n", " ").strip()
-            category = tx.get("category", "Unknown")
-
+            
             f.write(f"{date_str}\n")
             f.write(f"U-{amount}\n")
             f.write(f"T-{amount}\n")

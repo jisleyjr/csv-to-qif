@@ -170,3 +170,4 @@ cython_debug/
 *.csv
 !samples/input.csv
 !input/mappings-sample.csv
+payee-mappings.json

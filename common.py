@@ -1,4 +1,5 @@
 import csv
+import json
 import sys
 import time
 from datetime import datetime
@@ -16,6 +17,11 @@ def load_mappings(inputsource):
 
   # return mappings
   return mappings
+
+# Load the json mappings for payees
+def load_payee_mappings() -> dict:
+  with open('input/payee-mappings.json', 'r') as f:
+    return json.load(f)
 
 # Format the date into the needed format
 def format_date_yy(date):

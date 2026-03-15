@@ -1,14 +1,10 @@
-[
-  {
-    "SP BRUNT WORKWEAR 54 CONCORD STREET": {
-      "name": "Brunt Workwear",
-      "category": "Clothing"
-    }
+{
+  "SP BRUNT WORKWEAR 54 CONCORD STREET": {
+    "name": "Brunt Workwear",
+    "category": "Clothing"
   },
-  {
-    "DRUNKEN NOODLE SLURP RAM 414 Broadway NW": {
-      "name": "Drunken Noodle",
-      "category": "Dining Out:Work"
-    }
+  "DRUNKEN NOODLE SLURP RAM 414 Broadway NW": {
+    "name": "Drunken Noodle",
+    "category": "Dining Out:Work"
   }
-]
+}

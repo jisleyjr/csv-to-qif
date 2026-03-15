@@ -41,6 +41,8 @@ Feb 16, 2026 DRUNKEN NOODLE SLURP RAM 414 Main St NW $16.88
 Anytown 11111 564 123
 ```
 
+A payee_mappings.json file needs to placed in the input folder along with all the mappings from the Transaction sample above to what you want in Quicken. If not found it'll default to 'Miscellanous' for the Category.
+
 ## Quicken QIF
 
 Here is an example of the above transaction converted.
