@@ -1,0 +1,8 @@
+# Ignore local virtual environment and caches
+myenv/
+__pycache__/
+*.pyc
+.git/
+.DS_Store
+output/
+*.log
