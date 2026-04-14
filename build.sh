@@ -6,7 +6,7 @@ TAG=${1:-latest}
 echo "Building Docker image: csv-to-qif:$TAG"
 
 # Build the Docker image
-docker build -t "c:$TAG" .
+docker build -t "csv-to-qif:$TAG" .
 
 if [ $? -eq 0 ]; then
     echo "--------------------------------------------------"
