@@ -149,7 +149,7 @@ def main():
             date_str = tx["date"]          # e.g. "2/11'26"
             amount = tx["amount"]          # e.g. "23.47"
             
-            f.write(f"{date_str}\n")
+            f.write(f"D{date_str}\n")
             f.write(f"U-{amount}\n")
             f.write(f"T-{amount}\n")
             f.write("C*\n")

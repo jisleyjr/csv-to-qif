@@ -31,9 +31,6 @@ esac
 
 echo "Running conversion for $CONVERSION_TYPE using src/$SCRIPT"
 
-# Run the docker container
-#!/bin/bash
-
 # Check if enough arguments are provided
 if [ "$#" -ne 2 ]; then
     echo "Usage: $0 <conversion_type> <input_file_path>"
@@ -63,7 +60,7 @@ case "$CONVERSION_TYPE" in
         ;;
 esac
 
-echo "Running conversion for $CONVERSION_TYPE using src/$SCRIPT"
+echo "Ran conversion for $CONVERSION_TYPE using src/$SCRIPT"
 
 # Run the docker container
 # We removed the extra "python" argument from the command line

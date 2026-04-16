@@ -62,5 +62,6 @@ def convert_coinbase_date(old: str) -> str:
   """
   # Parse the original format
   dt = datetime.strptime(old, "%b %d, %Y")
-  # Build the new format: month/day'YY
-  return f"{dt.month}/{dt.day:02d}'{dt.year % 100:02d}"
+  # Build the new format: month/day'YY with space before single-digit days
+  day_str = f" {dt.day}" if dt.day < 10 else str(dt.day)
+  return f"{dt.month}/{day_str}'{dt.year % 100:02d}"
