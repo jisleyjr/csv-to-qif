@@ -65,3 +65,35 @@ def convert_coinbase_date(old: str) -> str:
   # Build the new format: month/day'YY with space before single-digit days
   day_str = f" {dt.day}" if dt.day < 10 else str(dt.day)
   return f"{dt.month}/{day_str}'{dt.year % 100:02d}"
+
+def strip_currency(value: str) -> str:
+  """
+  Convert currency string to plain number.
+  Examples: "$187.46" → "187.46", "($30.94)" → "-30.94"
+  """
+  # Remove spaces
+  value = value.strip()
+  # Handle parentheses for negative values
+  if value.startswith('(') and value.endswith(')'):
+    value = '-' + value[1:-1]
+  # Remove dollar sign and commas
+  value = value.replace('$', '').replace(',', '')
+  return value
+
+def format_bell_date(date: str) -> str:
+  """
+  Convert BELL date format M/D/YYYY or MM/DD/YYYY to QIF format DM/DD'YY
+  Example: "8/30/2024" → "D8/30'24"
+  """
+  parts = date.split('/')
+  month = int(parts[0])
+  day = int(parts[1])
+  year = parts[2][-2:]  # Get last 2 digits of year
+  
+  formattedDate = 'D' + str(month) + '/'
+  # Pad the day with a space if less than 10
+  if day < 10:
+    formattedDate += ' '
+  formattedDate += str(day) + '\'' + year
+  
+  return formattedDate

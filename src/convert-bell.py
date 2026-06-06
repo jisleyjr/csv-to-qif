@@ -24,54 +24,44 @@ with open('input/' + filename, newline='\n') as csvfile:
     # Write the header
     outputfile.write('!Type:Invst\n')
 
-    # Date,FundName,TransName,Units,Amount,Price,Source
+    # BELL columns: Fund Type, Fund Name, Transaction Date, Type, Dollars, Price, Shares Purchased/Sold, Total Shares, Market Price, Market Value
     for row in reader:
-      # FundName needs to be in the mappings
-      if (row['FundName'] in mappings):
+      # Normalize column keys and values by stripping whitespace
+      row = {k.strip(): v.strip() if isinstance(v, str) else v for k, v in row.items()}
+      
+      # Fund Name needs to be in the mappings
+      if (row['Fund Name'] in mappings):
         # Load up the properties
-        date = format_date_yy(row['Date'])
-        fundname = mappings[row['FundName']]
-        units = row['Units']
-        amount = row['Amount']
-        price = row['Price']
+        date = format_bell_date(row['Transaction Date'])
+        fundname = mappings[row['Fund Name']]
+        units = row['Shares Purchased/Sold']
+        amount = strip_currency(row['Dollars'])
+        price = strip_currency(row['Price'])
 
-        if (row['TransName'] == 'Investment Purchase'):
+        if (row['Type'] == 'Contributions'):
           action = 'Buy'
           # Putting it all together
           transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
           outputfile.write(transaction)
           
-        elif (row['TransName'] == 'Investment Withdrawal'):
-          action = 'Sell'
-          # Putting it all together
-          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
-          outputfile.write(transaction)
-
-        elif (row['TransName'] == 'Custodial Management Fee'):
-          action = 'Sell'
-          # Putting it all together
-          # Units and amount have a - as a prefix
-          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units.replace("-", "") + '\nO' + amount.replace("-", "") + '\n^\n'
-          outputfile.write(transaction)
-
-        elif (row['TransName'] == 'Custodial Management Fee - Cash disbursement'):
-          # TODO : Handle Custodial Management Fee - Cash disbursement
-          print('This not handled yet: ' + row['TransName'])
-
-        elif (row['TransName'] == 'Reinvested Dividend'):
+        elif (row['Type'] == 'Earnings'):
           action = 'ReinvDiv'
           # Putting it all together
           transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
           outputfile.write(transaction)
 
-        elif (row['TransName'] == 'Dividend Received - Cash receipt'):
-          # Not going to handle Dividend Received - Cash receipt
-          print('Not going to handle Dividend Received - Cash receipt')
-        else:
-          print('Unhandled TransName: ' + row['TransName'])
+        elif (row['Type'] == 'Third Party Fee'):
+          action = 'Sell'
+          # Putting it all together
+          # For fees, amount is negative in the CSV
+          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units.replace("-", "") + '\nO' + amount.replace("-", "") + '\n^\n'
+          outputfile.write(transaction)
 
-      elif (row['FundName'] != 'Cash'):
-        print('FundName not found in mappings: ' + row['FundName'])
+        else:
+          print('Unhandled Type: ' + row['Type'])
+
+      elif (row['Fund Name'] != 'Cash'):
+        print('Fund Name not found in mappings: ' + row['Fund Name'])
 
 print('Done')
       
