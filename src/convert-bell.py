@@ -49,8 +49,21 @@ with open('input/' + filename, newline='\n') as csvfile:
           # Putting it all together
           transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
           outputfile.write(transaction)
+        
+        elif (row['Type'] == 'Dividend'):
+          action = 'ReinvDiv'
+          # Putting it all together
+          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units + '\nU' + amount + '\nT' + amount + '\n^\n'
+          outputfile.write(transaction)
 
         elif (row['Type'] == 'Third Party Fee'):
+          action = 'Sell'
+          # Putting it all together
+          # For fees, amount is negative in the CSV
+          transaction = date + '\nN' + action + '\nY' + fundname + '\nI' + price + '\nQ' + units.replace("-", "") + '\nO' + amount.replace("-", "") + '\n^\n'
+          outputfile.write(transaction)
+          
+        elif (row['Type'] == 'Recordkeeping Fee'):
           action = 'Sell'
           # Putting it all together
           # For fees, amount is negative in the CSV
