@@ -3,7 +3,7 @@
 # Check if enough arguments are provided
 if [ "$#" -ne 2 ]; then
     echo "Usage: $0 <conversion_type> <input_file_path>"
-    echo "Conversion types: bell, capitalgroup, cbcc, wex"
+    echo "Conversion types: bell, bestbuy, capitalgroup, cbcc, wex"
     echo "Example: $0 wex input/some_file.csv"
     exit 1
 fi
@@ -16,6 +16,9 @@ case "$CONVERSION_TYPE" in
     "bell")
         SCRIPT="convert-bell.py"
         ;;
+    "bestbuy")
+        SCRIPT="convert-bestbuy.py"
+        ;;
     "capitalgroup")
         SCRIPT="convert-capitalgroup.py"
         ;;
@@ -27,7 +30,7 @@ case "$CONVERSION_TYPE" in
         ;;
     *)
         echo "Error: Unknown conversion type '$CONVERSION_TYPE'"
-        echo "Allowed: bell, capitalgroup, cbcc, wex"
+        echo "Allowed: bell, bestbuy, capitalgroup, cbcc, wex"
         exit 1
         ;;
 esac
