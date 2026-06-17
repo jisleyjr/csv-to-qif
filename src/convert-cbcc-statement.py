@@ -112,6 +112,9 @@ def main():
     # Load the payee mappings
     payee_mappings = load_payee_mappings()
 
+    payees_not_found_list = []
+    payees_found_list = []
+
     # Now create the output QIF file
     output_path = Path("output") / f"{str(int(time.time()))}-CBCC.QIF"
     
@@ -138,10 +141,12 @@ def main():
             #print(f"Original description: '{description}'")
             entry = payee_mappings.get(description, {})
             if entry:
-                description = entry.get("name", description)
+                payee_name = entry.get("name", description)
                 category = entry.get("category", "Miscellaneous")
+                payees_found_list.append({"date": tx["date"], "amount": tx["amount"], "payee": payee_name, "category": category})
             else:
-                print(f"{description}")
+                payees_not_found_list.append(description)
+                payee_name = description
                 category = "Miscellaneous"
             
 
@@ -153,11 +158,16 @@ def main():
             f.write(f"U-{amount}\n")
             f.write(f"T-{amount}\n")
             f.write("C*\n")
-            f.write(f"P{description}\n")
+            f.write(f"P{payee_name}\n")
             f.write(f"L{category}\n")
             f.write("^\n")
 
-    print(f"Written output to: {output_path}")
+    if payees_not_found_list:
+        print("\nPayees not found:")
+        for payee in payees_not_found_list:
+            print(f"  {payee}")
+    else:
+        print(f"Written output to: {output_path}")
 
 if __name__ == "__main__":
     main()
